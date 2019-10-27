@@ -9,31 +9,56 @@ from evdev import InputDevice, ecodes
 import redboard
 
 dev = InputDevice('/dev/input/event0')
-#print(dev)
+dev2 = InputDevice('/dev/input/event1')
+dev3 = InputDevice('/dev/input/event2')
 
+print (str(dev))
+
+is_ps4 = str(dev).find('Wireless Controller Touchpad')
 device = str(dev).find('Rock Candy')  # Look for a Rock Candy or PiHut controller
-if device != -1:
+
+if is_ps4 > 1:
+    controller = 0
+    dev = dev3
+    print('Controller: PS4 found')
+elif device != -1:
     print ('Controller: Rock Candy PS3 Gamepad')
     controller = 1
 else:
     print ('Controller: PiHut PS3 Gamepad')
     controller = 2
 
+test_controller = False
+
+if test_controller:
+    for event in dev.read_loop():
+        if event.type == ecodes.EV_KEY:
+            print(event.code)
+            print(event.value)
+
+        if event.type == ecodes.EV_ABS:
+            print(event.code)
+            print(event.value)
+
 
 # Button mapping for different controllers
-if controller == 1:  # Rock Candy
+if controller == 0: # PS4
+    triangle, x, square, circle = 307, 304, 308, 305
+    R1, R2, R3 = 311, 313, 0
+    L1, L2, L3 = 310, 312, 0
+    select, start, home = 316, 315, 0
+
+elif controller == 1:  # Rock Candy
     triangle, x, square, circle = 307, 305, 304, 306
     R1, R2, R3 = 309, 311, 315
     L1, L2, L3 = 308, 310, 314
     select, start, home = 312, 313, 316 
 
-
-if controller == 2:  # PiHut
+elif controller == 2:  # PiHut
     triangle, x, square, circle = 308, 304, 307, 305
     R1, R2, R3 = 311, 313, 318
     L1, L2, L3 = 310, 312, 317
     select, start, home = 314, 315, 316 
-
 
 # Set up variables
 RX = 0
@@ -50,6 +75,10 @@ LM_OLD = 0
 RM_OLD = 0
 turbo = False
 invertX = False
+
+for event in dev.read_loop():
+    print(event)
+
 
 # Read gamepad buttons
 for event in dev.read_loop():

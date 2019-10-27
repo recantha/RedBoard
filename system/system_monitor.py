@@ -134,7 +134,7 @@ batAvg = volts_0
 
 print('')
 
-print ("System Monitor Running...")
+print ("System Monitor Running...", volts_0)
 
 
 if volts_0 >= 9:

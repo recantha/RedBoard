@@ -29,6 +29,15 @@ else
     sudo sed -i -e '$i #start System Monitor\nsudo python3 /home/pi/RedBoard/system/ip.py; sudo python3 /home/pi/RedBoard/system/system_monitor.py&' /etc/rc.local
 fi
 
+if grep -Fq "ssd1306_stats.py" "/etc/rc.local"
+then
+    echo "SSD1306 already in rc.local"
+else
+    echo "Installing SSD1306"
+    sudo pip3 install adafruit-circuitpython-ssd1306
+    sudo sed -i -e '$i #Start SSD display\nsudo python3 /home/pi/RedBoard/ssd1306_stats.py &' /etc/rc.local
+fi
+
 echo
 echo "Install Finished"
 echo

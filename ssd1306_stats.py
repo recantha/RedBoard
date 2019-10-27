@@ -95,11 +95,15 @@ while True:
         bat = subprocess.check_output(cmd, shell = True ).decode()
         #print (bat)
 
-        # Write two lines of text.
+        cmd = "iw wlan0 link | grep SSID | cut -d \':\' -f2 | cut -d \' \' -f2"
+        ap = subprocess.check_output(cmd, shell=True).decode()
+
+        # Write three lines of text.
 
         #draw.text((x, top+0), "IP: "+IP, font=font, fill=255)
-        draw.text((0, 2),      str(IP),  font=font, fill=255)
-        draw.text((x, 16),     "BAT: " + str(bat), font=font, fill=255)
+        draw.text((0, 0),  str(IP),  font=font, fill=255)
+        draw.text((x, 10), "BAT: " + str(bat), font=font, fill=255)
+        draw.text((x, 20), "AP: " + ap, font=font, fill=255)
 
         # Display image.
         disp.image(image)
